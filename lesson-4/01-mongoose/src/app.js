@@ -1,25 +1,24 @@
 import express from 'express';
 
+import { Student } from './models/student.js';
+
 const app = express();
 
-const STUDENTS = [
-  { id: 1, name: 'Student 1' },
-  { id: 2, name: 'Student 2' },
-];
+app.get('/api/students', async (req, res) => {
+  const students = await Student.find();
 
-app.get('/api/students', (req, res) => {
-  res.json({
-    data: STUDENTS,
-  });
+  res.json({ data: students });
 });
 
-app.get('/api/students/:id', (req, res) => {
-  const studentId = parseInt(req.params.id, 10);
+app.get('/api/students/:id', async (req, res) => {
+  const studentId = req.params.id;
 
-  const student = STUDENTS.find((student) => student.id === studentId);
+  const student = await Student.findById(studentId);
 
-  if (typeof student === 'undefined') {
-    return res.status(404).send({ messaage: 'Student not found' });
+  console.log('Received ID:', studentId);
+
+  if (student === null) {
+    return res.status(404).send({ message: 'Student not found' });
   }
 
   res.json({ data: student });

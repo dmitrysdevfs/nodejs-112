@@ -1,7 +1,8 @@
-// import mongoose from 'mongoose';
+import mongoose from 'mongoose';
+import { getEnvVar } from './utils/getEnvVar.js';
 
 function initDatabaseConnection() {
-  // return mongoose.connect(`mongodb+srv://database`);
+  return mongoose.connect(getEnvVar('MONGODB_URI'));
 }
 
 export { initDatabaseConnection };
