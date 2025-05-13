@@ -1,3 +1,5 @@
+import createHttpError from 'http-errors';
+
 import { getStudents, getStudentById } from '../services/student.service.js';
 
 async function getStudentsController(req, res) {
@@ -11,10 +13,8 @@ async function getStudentByIdController(req, res) {
 
   const student = await getStudentById(studentId);
 
-  console.log('Received ID:', studentId);
-
   if (student === null) {
-    return res.status(404).send({ message: 'Student not found' });
+    throw new createHttpError.NotFound('Student Not Found');
   }
 
   res.json({ data: student });
