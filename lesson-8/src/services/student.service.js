@@ -1,11 +1,14 @@
 import { Student } from '../models/student.model.js';
 
-export async function getStudents({ page, perPage }) {
+export async function getStudents({ page, perPage, sortBy, sortOrder }) {
   const skip = page > 0 ? (page - 1) * perPage : 0;
 
   const [total, students] = await Promise.all([
     Student.countDocuments(),
-    Student.find().skip(skip).limit(perPage),
+    Student.find()
+      .sort({ [sortBy]: sortOrder })
+      .skip(skip)
+      .limit(perPage),
   ]);
 
   const totalPages = Math.ceil(total / perPage);
