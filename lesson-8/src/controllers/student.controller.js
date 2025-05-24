@@ -9,8 +9,12 @@ import {
   replaceStudent,
 } from '../services/student.service.js';
 
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+
 async function getStudentsController(req, res) {
-  const students = await getStudents();
+  const { page, perPage } = parsePaginationParams(req.query);
+
+  const students = await getStudents({ page, perPage });
 
   res.json({ data: students });
 }

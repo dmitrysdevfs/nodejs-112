@@ -1,8 +1,26 @@
 import { Student } from '../models/student.model.js';
 
-export function getStudents() {
-  return Student.find();
+export async function getStudents({ page, perPage }) {
+  const skip = page > 0 ? (page - 1) * perPage : 0;
+
+  const [total, students] = await Promise.all([
+    Student.countDocuments(),
+    Student.find().skip(skip).limit(perPage),
+  ]);
+
+  const totalPages = Math.ceil(total / perPage);
+
+  return {
+    students,
+    total,
+    page,
+    perPage,
+    totalPages,
+    hasNextPage: totalPages > page,
+    hasPreviousPage: page > 1,
+  };
 }
+
 export function getStudentById(studentId) {
   return Student.findById(studentId);
 }
