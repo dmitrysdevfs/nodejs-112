@@ -14,3 +14,17 @@ export async function registerUser(payload) {
 
   return User.create(payload);
 }
+
+export async function loginUser(email, password) {
+  const user = await User.findOne({ email });
+
+  if (user === null) {
+    throw new createHttpError.Unauthorized('Email or password is incorrect');
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (isMatch !== true) {
+    throw new createHttpError.Unauthorized('Email or password is incorrect');
+  }
+}
