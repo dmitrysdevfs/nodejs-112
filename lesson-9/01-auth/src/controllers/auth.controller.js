@@ -9,7 +9,11 @@ export async function registerController(req, res) {
 }
 
 export async function loginController(req, res) {
-  await loginUser(req.body.email, req.body.password);
+  const session = await loginUser(req.body.email, req.body.password);
 
-  res.json({ message: 'Login' });
+  res.json({
+    status: 200,
+    message: 'Login successfully',
+    data: { accessToken: session.accessToken },
+  });
 }
