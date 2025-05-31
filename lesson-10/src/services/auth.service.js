@@ -31,6 +31,8 @@ export async function loginUser(email, password) {
     throw new createHttpError.Unauthorized('Email or password is incorrect');
   }
 
+  await Session.deleteOne({ userId: user._id });
+
   const accessToken = crypto.randomBytes(30).toString('base64');
   const refreshToken = crypto.randomBytes(30).toString('base64');
 
@@ -41,4 +43,8 @@ export async function loginUser(email, password) {
     accessTokenValidUntil: new Date(Date.now() + 10 * 60 * 1000),
     refreshTokenValidUntil: new Date(Date.now() + 24 * 60 * 60 * 1000),
   });
+}
+
+export async function logoutUser(sessionId) {
+  await Session.deleteOne({ _id: sessionId });
 }
