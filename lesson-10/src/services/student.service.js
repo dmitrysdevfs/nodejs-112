@@ -6,10 +6,11 @@ export async function getStudents({
   sortBy,
   sortOrder,
   filter,
+  ownerId,
 }) {
   const skip = page > 0 ? (page - 1) * perPage : 0;
 
-  const studentQuery = Student.find();
+  const studentQuery = Student.find({ ownerId });
 
   if (typeof filter.gender !== 'undefined') {
     studentQuery.where('gender').equals(filter.gender);

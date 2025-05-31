@@ -26,6 +26,7 @@ async function getStudentsController(req, res) {
     sortBy,
     sortOrder,
     filter,
+    ownerId: req.user.id,
   });
 
   res.json({ data: students });
@@ -38,6 +39,11 @@ async function getStudentByIdController(req, res) {
 
   if (student === null) {
     throw new createHttpError.NotFound('Student Not Found');
+  }
+
+  if (student.ownerId.toString() !== req.user.id.toString()) {
+    throw new createHttpError.NotFound('Student Not Found');
+    // throw new createHttpError.Forbidden('Access denied for current student');
   }
 
   res.json({ data: student });
@@ -64,7 +70,7 @@ async function deleteStudentController(req, res) {
 }
 
 async function createStudentController(req, res) {
-  const student = await createStudent(req.body);
+  const student = await createStudent({ ...req.body, ownerId: req.user.id });
 
   res.status(201).json({
     status: 201,
