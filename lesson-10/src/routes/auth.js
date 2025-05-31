@@ -10,6 +10,7 @@ import {
   loginController,
   registerController,
   logoutController,
+  refreshController,
 } from '../controllers/auth.controller.js';
 
 const router = express.Router();
@@ -30,5 +31,7 @@ router.post(
 );
 
 router.post('/logout', ctrlWrapper(logoutController));
+
+router.post('/refresh', ctrlWrapper(refreshController));
 
 export default router;
