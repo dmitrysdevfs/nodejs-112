@@ -1,3 +1,5 @@
+import crypto from 'node:crypto';
+
 import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
 
@@ -29,10 +31,13 @@ export async function loginUser(email, password) {
     throw new createHttpError.Unauthorized('Email or password is incorrect');
   }
 
+  const accessToken = crypto.randomBytes(30).toString('base64');
+  const refreshToken = crypto.randomBytes(30).toString('base64');
+
   return Session.create({
     userId: user._id,
-    accessToken: 'ACCESS_TOKEN',
-    refreshToken: 'REFRESH_TOKEN',
+    accessToken,
+    refreshToken,
     accessTokenValidUntil: new Date(Date.now() + 10 * 60 * 1000),
     refreshTokenValidUntil: new Date(Date.now() + 24 * 60 * 60 * 1000),
   });
