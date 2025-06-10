@@ -108,3 +108,29 @@ export async function requestResetPassword(email) {
     template({ link: `http://localhost:3000/reset-password/?token=${token}` }),
   );
 }
+
+export async function resetPassword(password, token) {
+  try {
+    const decoded = jwt.verify(token, getEnvVar('JWT_SECRET'));
+
+    const user = await User.findById(decoded.sub);
+
+    if (user === null) {
+      throw new createHttpError.NotFound('User not found');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await User.findByIdAndUpdate(user._id, { password: hashedPassword });
+  } catch (error) {
+    if (error.name === 'JsonWebTokenError') {
+      throw new createHttpError.Unauthorized('Token is unauthorized');
+    }
+
+    if (error.name === 'TokenExpiredError') {
+      throw new createHttpError.Unauthorized('Token is expired');
+    }
+
+    throw error;
+  }
+}
