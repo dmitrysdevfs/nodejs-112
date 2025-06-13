@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import express from 'express';
 import cookieParser from 'cookie-parser';
 
@@ -6,6 +8,8 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 
 const app = express();
+
+app.use('/avatars', express.static(path.resolve('src', 'uploads', 'avatars')));
 
 app.use(cookieParser());
 

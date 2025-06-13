@@ -1,3 +1,6 @@
+import * as fs from 'node:fs/promises';
+import path from 'node:path';
+
 import createHttpError from 'http-errors';
 
 import {
@@ -70,7 +73,18 @@ async function deleteStudentController(req, res) {
 }
 
 async function createStudentController(req, res) {
-  const student = await createStudent({ ...req.body, ownerId: req.user.id });
+  console.log(req.file);
+
+  await fs.rename(
+    req.file.path,
+    path.resolve('src', 'uploads', 'avatars', req.file.filename),
+  );
+
+  const student = await createStudent({
+    ...req.body,
+    ownerId: req.user.id,
+    avatar: req.file.filename,
+  });
 
   res.status(201).json({
     status: 201,
