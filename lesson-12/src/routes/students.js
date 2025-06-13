@@ -12,6 +12,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidID } from '../middleware/isValidID.js';
 import { validateBody } from '../middleware/validateBody.js';
 import { studentSchema, updateStudentSchema } from '../validation/student.js';
+import { upload } from '../middleware/upload.js';
 
 const router = express.Router();
 const jsonParser = express.json();
@@ -24,6 +25,7 @@ router.delete('/:id', isValidID, ctrlWrapper(deleteStudentController));
 
 router.post(
   '/',
+  upload.single('avatar'),
   jsonParser,
   validateBody(studentSchema),
   ctrlWrapper(createStudentController),

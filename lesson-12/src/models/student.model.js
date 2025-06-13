@@ -24,6 +24,11 @@ const studentSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       required: true,
     },
+    avatar: {
+      type: String,
+      required: false,
+      default: null,
+    },
   },
   {
     timestamps: true,
