@@ -12,9 +12,11 @@ import {
   replaceStudent,
 } from '../services/student.service.js';
 
+import { getEnvVar } from '../utils/getEnvVar.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { uploadToCloudinary } from '../utils/uploadToCloudinary.js';
 
 async function getStudentsController(req, res) {
   console.log(req.user);
@@ -73,17 +75,26 @@ async function deleteStudentController(req, res) {
 }
 
 async function createStudentController(req, res) {
-  console.log(req.file);
+  let avatar = null;
 
-  await fs.rename(
-    req.file.path,
-    path.resolve('src', 'uploads', 'avatars', req.file.filename),
-  );
+  if (getEnvVar('UPLOAD_TO_CLOUDINARY') === 'true') {
+    const result = await uploadToCloudinary(req.file.path);
+    await fs.unlink(req.file.path);
+
+    avatar = result.secure_url;
+  } else {
+    await fs.rename(
+      req.file.path,
+      path.resolve('src', 'uploads', 'avatars', req.file.filename),
+    );
+
+    avatar = `http://localhost:8080/avatars/${req.file.filename}`;
+  }
 
   const student = await createStudent({
     ...req.body,
     ownerId: req.user.id,
-    avatar: req.file.filename,
+    avatar,
   });
 
   res.status(201).json({
