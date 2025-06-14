@@ -16,3 +16,13 @@ export function getOAuthURL() {
     ],
   });
 }
+
+export async function validateCode(code) {
+  const response = await googleOAuthClient.getToken(code);
+
+  const ticket = await googleOAuthClient.verifyIdToken({
+    idToken: response.tokens.id_token,
+  });
+
+  return ticket;
+}

@@ -7,7 +7,7 @@ import {
   resetPassword,
 } from '../services/auth.service.js';
 
-import { getOAuthURL } from '../utils/googleOAuth.js';
+import { getOAuthURL, validateCode } from '../utils/googleOAuth.js';
 
 export async function registerController(req, res) {
   const user = await registerUser(req.body);
@@ -98,4 +98,12 @@ export function getOAuthController(req, res) {
       oauth_url: url,
     },
   });
+}
+
+export async function confirmOAuthController(req, res) {
+  const ticket = await validateCode(req.body.code);
+
+  console.log(ticket);
+
+  res.end();
 }
