@@ -18,12 +18,12 @@ servers:
   - url: http://127.0.0.1:8080
 
 paths:
-  /students/{id}:
+  /api/students/{id}:
     get:
-      $ref: '../swagger/paths/students/{id}/get.yaml'
-  /students:
+      $ref: '../swagger/paths/api/students/{id}/get.yaml'
+  /api/students:
     post:
-      $ref: '../swagger/paths/students/post.yaml'
+      $ref: '../swagger/paths/api/students/post.yaml'
 
 components:
   securitySchemes:

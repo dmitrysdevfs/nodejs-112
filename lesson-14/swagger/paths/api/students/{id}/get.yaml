@@ -31,9 +31,9 @@ responses:
               type: string
               example: Successfully get student
             data:
-              $ref: ../../../components/schemas/student.yaml
+              $ref: ../../../../components/schemas/student.yaml
   '401':
-    $ref: ../../../components/responses/401.yaml
+    $ref: ../../../../components/responses/401.yaml
   '404':
     description: Student not found
     content:
@@ -51,4 +51,4 @@ responses:
               type: string
               example: Student not found
   '500':
-    $ref: ../../../components/responses/500.yaml
+    $ref: ../../../../components/responses/500.yaml

@@ -56,8 +56,8 @@ responses:
               type: string
               example: Student created successfully
             data:
-              $ref: ../../components/schemas/student.yaml
+              $ref: ../../../components/schemas/student.yaml
   '401':
-    $ref: ../../components/responses/401.yaml
+    $ref: ../../../components/responses/401.yaml
   '500':
-    $ref: ../../components/responses/500.yaml
+    $ref: ../../../components/responses/500.yaml

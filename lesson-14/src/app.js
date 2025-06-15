@@ -1,13 +1,23 @@
+import * as fs from 'node:fs';
 import path from 'node:path';
 
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import swaggerUI from 'swagger-ui-express';
 
 import routes from './routes/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 
+const SWAGGER_DOCUMENT = JSON.parse(
+  fs.readFileSync(path.join('docs', 'swagger.json'), 'utf-8'),
+);
+
 const app = express();
+
+// if (process.env.NODE_ENV === 'development') {
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(SWAGGER_DOCUMENT));
+// }
 
 app.use('/avatars', express.static(path.resolve('src', 'uploads', 'avatars')));
 
