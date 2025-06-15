@@ -18,6 +18,9 @@ servers:
   - url: http://127.0.0.1:8080
 
 paths:
+  /students/{id}:
+    get:
+      $ref: '../swagger/paths/students/{id}/get.yaml'
 
 components:
   securitySchemes:

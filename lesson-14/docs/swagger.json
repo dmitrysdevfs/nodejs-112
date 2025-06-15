@@ -24,7 +24,18 @@
       "description": "Auth operations."
     }
   ],
-  "paths": null,
+  "paths": {
+    "/students/{id}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Get student by id",
+        "operationId": "getStudent",
+        "description": "Get student by ID"
+      }
+    }
+  },
   "components": {
     "securitySchemes": {
       "bearerAuth": {
